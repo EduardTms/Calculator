@@ -11,21 +11,29 @@ body {
     align-items: center;
     justify-content: center;
     flex-direction: column;
+    background-color: rgb(226, 216, 216);
 }
 
 .calculatorBody {
     display: flex;
     flex-direction: column;
     align-items: center;
+    border-radius: 0.5em;
     border: 1px solid black;
+    border-radius: 0.5em;
+    padding-bottom: 15px;
+    background-color: grey;
 }
 
 .screen {
-    height: 50px;
+    height: 60px;
     width: 300px;
-    background-color: bisque;
     margin: 20px;
     text-align: right;
+    background-color: rgb(226, 216, 216);
+    border: 1px solid black;
+    border-radius: 0.5em;
+    padding: 15px;
 }
 
 .upperScreen {
@@ -34,19 +42,58 @@ body {
     background-color: brown;
     font-size: 24px;
     color: grey;
+    background-color: rgb(226, 216, 216);
 }
 
 .lowerScreen {
     height: 30px;
     width: 300px;
-    background-color: lightpink;
+    background-color: rgb(226, 216, 216);
     font-size: 32px;
 }
 
 .buttons {
     display: grid;
     grid-template-columns: 1fr 1fr 1fr 1fr;
-    gap: 10px;
+    gap: 5px;
+    padding: 15px;
+}
+
+button {
+    border-radius: 0.5em;
+    background: hsl(208, 24%, 74%);
+    font-size: 24px;
+}
+
+#add, #divide, #subtract, #multiply, #equals, #AC, #DEL {
+    border: none;
+    padding-block-start: 0.5rem; /* Logical Property for padding-top */
+    padding-block-end: 0.5rem; /* Logical Property for padding-bottom */
+    padding-inline-start: 1.15rem; /* Logical Property for padding-left */
+    padding-inline-end: 1.15rem; /* Logical Property for padding-right */
+    background-color: azure;
+}
+
+#equals {
+    background-color: lightgreen;
+}
+
+#add:hover, #divide:hover, #subtract:hover, #multiply:hover, #equals:hover, #AC:hover, #DEL:hover {
+    background-color: hsl(208, 24%, 74%);
+}
+
+#equals:hover {
+    background-color: rgb(86, 167, 86);
+}
+
+button:first-child {
+    grid-column-start: 1;
+    grid-column-end: 3;
+}
+
+button:last-child {
+    grid-column-start: 3;
+    grid-column-end: 5;
 }
 
 .errorDisplay {
@@ -61,12 +108,15 @@ body {
     margin-top: 10px;
 }
 
-button:first-child {
-    grid-column-start: 1;
-    grid-column-end: 3;
+footer {
+    position:absolute;
+    bottom:0;
+    padding: 10px;
+    color: black;
+    border-radius: 0.5em;
 }
 
-button:last-child {
-    grid-column-start: 3;
-    grid-column-end: 5;
+a {
+    color:rgb(32, 31, 31);
+    text-decoration: none;
 }

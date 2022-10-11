@@ -130,6 +130,9 @@ const error = () => {
 const multiplePointsError = () => {
     if(lowerScreen.textContent.indexOf('.') !== lowerScreen.textContent.lastIndexOf('.')) {
         errorScreen.textContent = "Number can't contain multiple decimal points";
+        setTimeout(() => {
+            errorScreen.textContent = '';
+        }, 2000)
         fullClear();
     }
 }
