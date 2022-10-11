@@ -5,6 +5,7 @@ const errorScreen = document.querySelector('.error');
 const equalsBtn = document.querySelector('#equals');
 const clearBtn = document.querySelector('#AC');
 const delBtn = document.querySelector('#DEL');
+const decimalBtn = document.querySelector('#point');
 let numberEntered = 0;
 let operation = '';
 let nbmLength =0;
@@ -44,37 +45,53 @@ const operate = (var1,var2,operator) => {
             return answer;
     }
 }
-
+// Take input from every button
 buttons.forEach(button => {
     button.addEventListener('click', () => {
-        if(Number.isInteger(parseInt(button.value))) {
-            inputNumber(button.value);
-            nbmLength++;
-        } else if(button.id === 'divide' || 
-                  button.id === 'multiply' || 
-                  button.id === 'subtract' || 
-                  button.id === 'add') {
-            operation = button.id;
-            firstNmb = numberEntered;
-            clearDisplayAfterOperationBtn();
-            upperScreenDisplay(true);
-        }
+        if(button.id === 'divide' || 
+           button.id === 'multiply' || 
+           button.id === 'subtract' || 
+           button.id === 'add') 
+           {
+                operation = button.id;
+                firstNmb = numberEntered;
+                decimalBtn.disabled = 'false';
+                clearDisplayAfterOperationBtn();
+                upperScreenDisplay(true);
+            }
+        inputNumber(button.value);
+        nbmLength++;
     })
 })
 
+// Populate the display when number buttons are clicked
 const inputNumber = (number) => {
     // the numberEntered can have a max length of 12
     if(nbmLength < 12) {
         lowerScreen.textContent += number;
-        numberEntered = parseInt(lowerScreen.textContent);
+        numberEntered = parseFloat(lowerScreen.textContent);
+        multiplePointsError();
     }
 }
 
+// Clears Lower display after Operation Button is clicked
 const clearDisplayAfterOperationBtn = () => {
     lowerScreen.textContent = '';
     numberEntered = 0;
 }
 
+// AC Button, resets everything
+const fullClear = () => {
+    lowerScreen.textContent = '';
+    upperScreen.textContent = '';
+    numberEntered = 0;
+    operation = '';
+    firstNmb = 0;
+    secondNmb = 0;
+    nbmLength = 0;
+}
+
+// Populates the upper part of the Screen with the operation that was performed
 const upperScreenDisplay = (bool) => {
     if (bool === true){
     switch (operation){
@@ -102,39 +119,45 @@ const upperScreenDisplay = (bool) => {
     }
 }
 
-//ToDo fix this
-// it deploys error after 0.5s instead of deploying it for 0.5s
-setTimeout(() => {
-    if(firstNmb === 0) {
-        errorScreen.textContent = "you have to enter a number first";
-    } else if(secondNmb === 0) {
-        errorScreen.textContent = "you have to enter a number first";
-    } else if(operation === '') {
-        errorScreen.textContent = 'you must press an operator first';
-    }
-},500);
+// Errors
+const error = () => {
+    if(firstNmb === 0 || firstNmb === NaN || secondNmb === 0 || (firstNmb !== 0 && operation === '') || lowerScreen.textContent === NaN) {
+        errorScreen.textContent = "You did something wrong! Try again";
+        fullClear();
+    }  
+}
 
+const multiplePointsError = () => {
+    if(lowerScreen.textContent.indexOf('.') !== lowerScreen.textContent.lastIndexOf('.')) {
+        errorScreen.textContent = "Number can't contain multiple decimal points";
+        fullClear();
+    }
+}
+
+
+// Equals button
+// 1. saves second Nmb in secondNmb var
+// 2. gives an error if something is wrong (see error function)
+// 3. saves operation answer in a var
+// 4. displays answer
+// 5. saves answer as the numberEntered (or firstNmb in case of further calculations)
 equalsBtn.addEventListener('click', () => {
     secondNmb = numberEntered;
-    console.log(firstNmb,numberEntered,operation);
-    console.log(operate(firstNmb,numberEntered,operation));
+    error();
+    setTimeout(() => {
+        errorScreen.textContent = '';
+    },2000);
     let answer = operate(firstNmb,secondNmb,operation);
     lowerScreen.textContent = answer;
     numberEntered = answer;
 });
 
-clearBtn.addEventListener('click', () => {
-    lowerScreen.textContent = '';
-    upperScreen.textContent = '';
-    numberEntered = 0;
-    operation = '';
-    firstNmb = 0;
-    secondNmb = 0;
-    nbmLength = 0;
-});
+clearBtn.addEventListener('click', fullClear);
 
+// Deletes the last number from the screen
 delBtn.addEventListener('click', () => {
     lowerScreen.textContent = lowerScreen.textContent.slice(0,-1);
     numberEntered = lowerScreen.textContent;
 });
+
 
